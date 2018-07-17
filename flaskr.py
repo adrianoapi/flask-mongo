@@ -29,6 +29,26 @@ def listOne(id):
     })
     return render_template('books/one.html', book = data)
 
+@app.route('/books/edit/<id>', methods = ['GET'])
+def edit(id):
+    data = collection.find_one({
+        '_id' : ObjectId(id)
+    })
+    return render_template('books/edit.html', book = data)
+
+@app.route('/books/edit/<id>', methods=['POST'])
+def update(id):
+    collection.update_one(
+        { '_id': ObjectId(id) },
+        {
+            '$set': {
+                'name'    : request.form['name'    ],
+                'subtitle': request.form['subtitle'],
+                'isbn'    : request.form['isbn'    ]
+            }
+        })
+    return redirect(url_for('list'))
+
 @app.route('/books/<id>', methods = ['POST'])
 def remove(id):
     collection.delete_many({
