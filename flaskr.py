@@ -29,6 +29,13 @@ def listOne(id):
     })
     return render_template('books/one.html', book = data)
 
+@app.route('/books/<id>', methods = ['POST'])
+def remove(id):
+    collection.delete_many({
+        '_id': ObjectId(id)
+    })
+    return redirect(url_for('index'))
+
 @app.route('/books/create', methods = ['POST'])
 def create():
     collection.insert_one({
