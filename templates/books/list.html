@@ -22,9 +22,10 @@
                     <td>{{ book.subtitle }}</td>
                     <td>{{ book.isbn }}</td>
                     <td>
-                        <a href={{ url_for('listOne', id = book._id) }} class="btn btn-primary btn-sm">Delete</a>
+                        <a href={{ url_for('listOne', id = book._id) }} class="btn btn-primary btn-sm">Visualizar</a>
+                        <a href={{ url_for('edit', id = book._id) }} class="btn btn-primary btn-sm">Editar</a>
                         <form action={{ url_for('remove', id = book._id) }} method="POST">
-                            <button type="submit" class="btn btn-danger btn-sm">Del</button>
+                            <button type="submit" class="btn btn-danger btn-sm">Excluir</button>
                         </form>
                     </td>
                 </tr>

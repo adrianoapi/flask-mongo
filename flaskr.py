@@ -1,6 +1,6 @@
 
-from flask         import Flask, render_template, request, redirect, url_for
-from pymongo       import MongoClient
+from flask         import Flask, render_template, request, redirect, url_for, jsonify
+from pymongo       import MongoClient, DESCENDING, ASCENDING
 from bson.objectid import ObjectId 
 
 app = Flask(__name__)
@@ -54,7 +54,7 @@ def remove(id):
     collection.delete_many({
         '_id': ObjectId(id)
     })
-    return redirect(url_for('index'))
+    return redirect(url_for('list'))
 
 @app.route('/books/create', methods = ['POST'])
 def create():
@@ -64,6 +64,13 @@ def create():
         'isbn'    : request.form['isbn'    ]
     })
     return redirect(url_for('list'))
+
+# order by
+
+@app.route('/books/list', methods = ['GET'])
+def bookList():
+    result = collection.find().count();
+    return jsonify(result = result)
 
 if __name__ == '__main__':
     app.run()
