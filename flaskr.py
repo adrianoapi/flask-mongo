@@ -16,6 +16,11 @@ def index():
 def new():
     return render_template('books/new.html')
 
+@app.route('/books', methods = ['GET'])
+def list():
+    list_colletcion = collection.find()
+    return render_template('books/list.html', books = list_colletcion)
+
 @app.route('/books/create', methods = ['POST'])
 def create():
     collection.insert_one({
