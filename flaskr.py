@@ -1,6 +1,7 @@
 
-from flask import Flask, render_template, request, redirect, url_for
-from pymongo import MongoClient
+from flask         import Flask, render_template, request, redirect, url_for
+from pymongo       import MongoClient
+from bson.objectid import ObjectId 
 
 app = Flask(__name__)
 
@@ -21,6 +22,13 @@ def list():
     list_colletcion = collection.find()
     return render_template('books/list.html', books = list_colletcion)
 
+@app.route('/books/<id>')
+def listOne(id):
+    data = collection.find_one({
+        '_id': ObjectId(id)
+    })
+    return render_template('books/one.html', book = data)
+
 @app.route('/books/create', methods = ['POST'])
 def create():
     collection.insert_one({
@@ -28,8 +36,7 @@ def create():
         'subtitle': request.form['subtitle'],
         'isbn'    : request.form['isbn'    ]
     })
-    
-    return redirect(url_for('index'))
+    return redirect(url_for('list'))
 
 if __name__ == '__main__':
     app.run()
