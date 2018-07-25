@@ -24,7 +24,7 @@
 # Listando resultados com filtro
 > db.movies.find({name: 'Filme 2'})
 
-# $lt = maior, $gt = menor
+# $lt = menor, $gt = maior
 > db.getCollection('users').find({
 status: 'A',
 age: {
@@ -150,4 +150,62 @@ _id: 2.0,
 $rename: {
 'name': 'nickname'
 }
+})
+
+# método updateMany, que tem o mesmo papel da atualização que utiliza o terceiro parâmetro multi
+db.getCollection('users').updateMany({
+age: {
+$gte: 26
+}
+}, {
+$set: {
+age: 27
+}
+})
+
+# Update column name
+> db.notas.updateMany({}, { $rename: {"aluno":"nome"} })
+
+TROCANDO O ID DO DOCUMENTO
+// store the document in a variable
+doc = db.clients.findOne({_id: ObjectId("4cc45467c55f4d2d2a000002")})
+
+// set a new _id on the document
+doc._id = ObjectId("4c8a331bda76c559ef000004")
+
+// insert the document, using the new _id
+db.clients.insert(doc)
+
+// remove the document with the old _id
+db.clients.remove({_id: ObjectId("4cc45467c55f4d2d2a000002")})
+
+# remove delete
+> db.users.remove({_id:2})
+
+
+# Deletando por critério
+> db.users.remove({'favorites.food': 'pizza'})
+
+# aggregate
+> db.getCollection('books').aggregate([{ $group: { _id: '$author', total: {$sum:1}} }])
+
+
+db.getCollection('books').update({
+author: 'School of Net'
+},{
+$set: {
+like: 150
+}
+}, {
+multi: true
+})
+
+db.getCollection('books').update({
+author: 'Code Education'
+},{
+$set: {
+like: 130
+}
+}, {
+multi: true
 })
